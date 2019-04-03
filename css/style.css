@@ -130,6 +130,20 @@ li .channel-meta {
     position: absolute;
     right: 16px;
     top: 12px;
+
+    /* #8 flexify style boxes for messageCount and expiresIn */
+    display: flex;
+}
+
+/* #8 Style boxes for messageCount and expiresIn */
+li .channel-meta span{
+    background-color: #3F51B5;
+    color: white;
+    margin: 2px;
+    padding: 2px;
+    font-size: small;
+    border-radius: 2px;
+    align-self: center;
 }
 
 li i.fas, li i.far  {
@@ -224,6 +238,15 @@ li.selected {
 
     /* #6 #hide the #smile menu */
     display: none;
+}
+
+/* #8 user input form for text messages */
+#messageText
+{
+    border: none;
+    font-size: 16px;
+    flex-grow: 1;
+    padding: 8px 16px 8px 16px;
 }
 
 /* MESSAGES */

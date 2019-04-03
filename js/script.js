@@ -14,29 +14,29 @@ var currentLocation = {
 
 /**
  * #6 #Switcher function for the #channels name in the right app bar
- * @param channel Text which is set
+ * @param channelObject Text which is set
  */
-function switchChannel(channel) {
+function switchChannel(channelObject) {
     //Log the channel switch
-    console.log("Tuning in to channel", channel);
+    console.log("Tuning in to channel", channelObject);
 
     //#7 change the channel name and location location link
-    document.getElementById('channel-name').innerHTML = channel.name;
+    document.getElementById('channel-name').innerHTML = channelObject.name;
     document.getElementById('channel-location').innerHTML = 
-        'by <a href="http://w3w.co/' + channel.createdBy + '" target="_blank"><strong>' 
-        + channel.createdBy + '</strong></a>';
+        'by <a href="http://w3w.co/' + channelObject.createdBy + '" target="_blank"><strong>' 
+        + channelObject.createdBy + '</strong></a>';
 
     /* #7 set class of star according to objects definition */
     $('#chat h1 i').removeClass('far fas');
-    $('#chat h1 i').addClass(channel.starred ? 'fas' : 'far');
+    $('#chat h1 i').addClass(channelObject.starred ? 'fas' : 'far');
 
     /* #6 #highlight the selected #channel.
        This is inefficient (jQuery has to search all channel list items), but we'll change it later on */
     $('#channels li').removeClass('selected');
-    $('#channels li:contains(' + channel.name + ')').addClass('selected');
+    $('#channels li:contains(' + channelObject.name + ')').addClass('selected');
 
     /* #7 store current channel */
-    currentChannel = channel;
+    currentChannel = channelObject;
 }
 
 /* #6 #liking a channel on #click */
@@ -72,4 +72,100 @@ function selectTab(tabId) {
 function toggleEmojis() {
     /* $('#emojis').show(); // #show */
     $('#emojis').toggle(); // #toggle
+}
+
+
+
+/**
+ * #8 Constructor function for messages 
+ * @param text text of message
+*/
+function Message(text){
+    this.createdBy = currentLocation.what3words;
+    this.latitude = currentLocation.latitude;
+    this.longitude = currentLocation.longitude;
+    this.createdOn = new Date();
+    this.expiresOn = new Date(Date.now() + 15 * 60 * 1000);
+    this.text = text;
+    this.own = true;
+}
+
+/**
+ *  #8 Function to send message
+ */
+function sendMessage()
+{
+    /* # 8 rework send message */
+    var messageObject = new Message($('#messageText').val());
+    
+    console.log('New Message: ', messageObject);
+
+    /* #8 call sendMessage and append it to messages with scrolling down*/
+    var messageElement = createMessageElement(messageObject);
+    var scrollHeight = $('#messages').prop('scrollHeight');
+    $('#messages').append(messageElement).scrollTop(scrollHeight);
+
+    /* #8 Clear message after sendt */
+    $('#messageText').val('');
+}
+
+/**
+ *  # 8 Function to create string representation of HTML element
+ *  @param messageObject object of chat message
+ *  @returns html element
+ */
+function createMessageElement(messageObject)
+{
+    var expiresIn = Math.round((messageObject.expiresOn - Date.now())/1000/60);
+
+    return '' + 
+
+    '<div class="message' +
+        /* # 8 add class own dynamically */
+        (messageObject.own ? ' own' : '') + '">' +
+        '<h3>' +
+            '<a href="http://w3w.co/' + messageObject.createdBy + '" target="_blank">' +
+                '<strong>' + messageObject.createdBy + '</strong> ' +
+            '</a>' +
+            messageObject.createdOn.toLocaleString() + '<em>'+ expiresIn + ' min. left</em>' +
+        '</h3>' +
+        '<p>' + messageObject.text + '</p>' +
+        '<button>+5 min.</button>' +
+    '</div>';
+}
+
+
+/**
+ * # 8 append channels to channel list
+ */
+function listChannels()
+{
+    $('#channels ul').append(createChannelElement(yummy));
+    $('#channels ul').append(createChannelElement(sevenContinents));
+    $('#channels ul').append(createChannelElement(killerApp));
+    $('#channels ul').append(createChannelElement(firstPersonOnMars));
+    $('#channels ul').append(createChannelElement(octoberfest));
+}
+
+
+/**
+ * # 8 create channel element
+ * @param channelObject channelObject to create element for
+ * @return jQuery element of channelObject
+ */
+function createChannelElement(channelObject)
+{
+    /* #8 Create channel and meta element */
+    var channelElement = $('<li>').text(channelObject.name);
+    var channelMeta = $('<span>').addClass('channel-meta').appendTo(channelElement);
+    
+    /* #8 add elements to meta element */
+    $('<i>').addClass(channelObject.starred ?'fas' : 'far').addClass('fa-star').appendTo(channelMeta);
+    
+    $('<span>').text(channelObject.expiresIn + ' min').appendTo(channelMeta);
+    $('<span>').text(channelObject.messageCount  + ' new').appendTo(channelMeta);
+
+    $('<i>').addClass('fas').addClass('fa-chevron-right').appendTo(channelMeta);
+
+    return channelElement;
 }
