@@ -38,7 +38,29 @@
     </h1>
 
     <!-- CHANNELS -->
-    <ul></ul>
+    <!-- #8 All old channels deleted except of two-->
+    <ul>
+         <!-- #6 #channels #click calls our switchChannel with the corresponding name as an argument -->
+         <li onclick="switchChannel(yummy)">
+            #Yummy(not dynamically, to test #7)
+            <!-- #5 #channels #icons now grouped in .channel-meta span -->
+            <span class="channel-meta">
+                <!-- #7 replace with font awesome icons-->
+                <i class="far fa-star"></i>
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        </li>
+        <!-- #6 #channels #click calls our switchChannel with the corresponding name as an argument -->
+        <li class="selected" onclick="switchChannel(sevenContinents)">
+            #SevenContinents(not dynamically, to test #7)
+            <!-- #5 #channels #icons now grouped in .channel-meta span -->
+            <span class="channel-meta">
+                <!-- #7 replace with font awesome icons-->
+                <i class="fas fa-star"></i>
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        </li>
+    </ul>
 
     <!-- TAB BAR -->
     <div id="tab-bar">
