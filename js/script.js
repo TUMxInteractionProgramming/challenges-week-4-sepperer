@@ -156,7 +156,7 @@ function listChannels()
 function createChannelElement(channelObject)
 {
     /* #8 Create channel and meta element */
-    var channelElement = $('<li>').text(channelObject.name);
+    var channelElement = $('<li>').text(channelObject.name).addClass((currentChannel == channelObject) ? 'selected' : '');
     var channelMeta = $('<span>').addClass('channel-meta').appendTo(channelElement);
     
     /* #8 add elements to meta element */
